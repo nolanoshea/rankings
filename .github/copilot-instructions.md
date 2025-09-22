@@ -41,20 +41,30 @@ Tests use JUnit 5 with Mockito. Note the custom Mockito configuration in Maven S
    - Uses Spring Data Redis Reactive for data operations
    - Vector store capabilities through Spring AI Redis integration
    - Supports Redis Search for vector similarity queries
-   - Configuration needed in application.properties:
-     ```properties
-     spring.data.redis.host=localhost
-     spring.data.redis.port=6379
-     # Optional authentication
-     spring.data.redis.username=
-     spring.data.redis.password=
-     ```
-   - Redis vector store configuration requires:
-     ```properties
-     spring.ai.vectorstore.redis.index-name=rankings
-     spring.ai.vectorstore.redis.dimension=# Vector dimension matching your embeddings
-     spring.ai.vectorstore.redis.prefix=doc
-     ```
+
+   Local Development Setup:
+   ```bash
+   # Start Redis using Docker (requires Docker installed)
+   ./scripts/start-redis.sh
+   ```
+
+   Configuration in application.properties:
+   ```properties
+   # Redis connection
+   spring.data.redis.host=localhost
+   spring.data.redis.port=6379
+   spring.data.redis.database=0
+
+   # Vector store settings
+   spring.ai.vectorstore.redis.index-name=rankings
+   spring.ai.vectorstore.redis.dimension=1536
+   spring.ai.vectorstore.redis.prefix=doc
+   ```
+
+   Troubleshooting:
+   - View Redis logs: `docker logs rankings-redis`
+   - Stop Redis: `docker stop rankings-redis`
+   - Redis CLI: `docker exec -it rankings-redis redis-cli`
 
 ## Integration Points
 1. OpenAI Integration:
